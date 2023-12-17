@@ -5,4 +5,5 @@ pub async fn get_board_name() -> Result<String, io::Error> {
         Ok(s) => Ok(s.trim().to_lowercase()),
         Err(e) => Err(e),
     }
+    // Ok("robo360".into())
 }

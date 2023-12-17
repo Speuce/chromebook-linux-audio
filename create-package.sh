@@ -27,8 +27,11 @@ touch $PACKAGE/etc/modprobe.d/snd-sof.conf
 # Files that are always in /usr
 # install_ucm()
 mkdir -p $PACKAGE/usr/share/alsa/ucm2
-cp -r chromebook-ucm-conf/common $PACKAGE/usr/share/alsa/ucm2/common
+# FIXME: Ubuntu 23.10 seems to already have the `common` folder
+# cp -r chromebook-ucm-conf/common $PACKAGE/usr/share/alsa/ucm2/common
 cp -r chromebook-ucm-conf/codecs $PACKAGE/usr/share/alsa/ucm2/codecs
+# FIXME: Ubuntu 23.10 seems to already have the `codecs/hda` folder
+rm -r $PACKAGE/usr/share/alsa/ucm2/codecs/hda
 cp -r chromebook-ucm-conf/platforms $PACKAGE/usr/share/alsa/ucm2/platforms
 mkdir -p $PACKAGE/usr/share/alsa/ucm2/conf.d
 cp -r chromebook-ucm-conf/sof-rt5682 $PACKAGE/usr/share/alsa/ucm2/conf.d/sof-rt5682
@@ -36,7 +39,7 @@ cp -r chromebook-ucm-conf/sof-cs42l42 $PACKAGE/usr/share/alsa/ucm2/conf.d/sof-cs
 # avs tplg
 mkdir -p $PACKAGE/usr/lib/firmware/intel
 cp -r conf/avs/tplg $PACKAGE/usr/lib/firmware/intel/avs
-rm $PACKAGE/usr/lib/firmware/intel/avs/max98357a-tplg.bin
+echo "" >$PACKAGE/usr/lib/firmware/intel/avs/max98357a-tplg.bin
 # rpl
 TPLG_PATH="/usr/lib/firmware/intel/sof-tplg"
 mkdir -p $PACKAGE/$TPLG_PATH
@@ -54,9 +57,11 @@ cp -r conf/amd-sof/tplg $PACKAGE/usr/lib/fimware/amd/sof-tplg
 # FIXME: Files from upstream may need to be copied
 
 # Programs / scripts
-sudo mount -t tmpfs tmpfs target
 cargo build --release
 install -D -t $PACKAGE/usr/bin target/release/eupnea-audio-start
 mkdir -p $PACKAGE/usr/bin
 cp eupnea-audio-stop.sh $PACKAGE/usr/bin/eupnea-audio-stop
 install -D -t $PACKAGE/usr/lib/systemd/system eupnea-audio.service
+install -D -t $PACKAGE/usr/share/eupnea-audio conf/boards.json
+cp chromebook-unique-id.sh $PACKAGE/usr/bin/chromebook-unique-id
+install -D -t $PACKAGE/etc/eupnea-audio audio-choices.toml

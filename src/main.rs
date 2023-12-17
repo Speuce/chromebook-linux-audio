@@ -22,7 +22,6 @@ async fn main() {
     let board_generation = board_generations
         .get(&board_name)
         .map(|generation| generation.as_str());
-    dbg!(board_generation);
 
     match board_generation {
         Some(board_generation) => {

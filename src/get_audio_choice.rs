@@ -5,7 +5,7 @@ use toml::Table;
 
 async fn get_unique_hash() -> String {
     String::from_utf8(
-        Command::new("/usr/bin/chromebook-unique-id.sh")
+        Command::new("/usr/bin/chromebook-unique-id")
             .output()
             .await
             .unwrap()
@@ -16,6 +16,7 @@ async fn get_unique_hash() -> String {
     .to_owned()
 }
 
+#[derive(Debug, Clone)]
 pub enum AudioChoice {
     Sof,
     AvsWithoutMax98357a,
@@ -23,7 +24,7 @@ pub enum AudioChoice {
 }
 
 async fn get_audio_choices() -> Table {
-    let table: Table = read_to_string("/etc/chromebook-audio/audio-choices.toml")
+    let table: Table = read_to_string("/etc/eupnea-audio/audio-choices.toml")
         .await
         .unwrap()
         .as_str()
