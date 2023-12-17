@@ -1,0 +1,11 @@
+[Unit]
+Description=Mounts configs for the audio of this Chromebook 
+
+[Service]
+Type=simple
+RemainAfterExit=yes
+ExecStart=eupnea-audio-start
+ExecStop=eupnea-audio-stop
+
+[Install]
+WantedBy=default.target
