@@ -26,14 +26,19 @@ touch $PACKAGE/etc/modprobe.d/snd-sof.conf
 
 # Files that are always in /usr
 # install_ucm()
-mkdir -p $PACKAGE/usr/share/alsa/ucm2
+mkdir -p $PACKAGE/usr/share/alsa/ucm2/conf.d
+for PLATFORM in "adl" "apl" "avs" "cezanne" "cml" "glk" "jsl" "mendocino" "mt8183" "picasso" "stoney"; do
+  cp -r chromebook-ucm-conf/$PLATFORM/* $PACKAGE/usr/share/alsa/ucm2/conf.d
+done
+rm $PACKAGE/usr/share/alsa/ucm2/conf.d/acp3xalc5682m98/acp3xalc5682m98.conf
+rm $PACKAGE/usr/share/alsa/ucm2/conf.d/sof-glkda7219ma/sof-glkda7219ma.conf
+
 # FIXME: Ubuntu 23.10 seems to already have the `common` folder
 # cp -r chromebook-ucm-conf/common $PACKAGE/usr/share/alsa/ucm2/common
 cp -r chromebook-ucm-conf/codecs $PACKAGE/usr/share/alsa/ucm2/codecs
 # FIXME: Ubuntu 23.10 seems to already have the `codecs/hda` folder
-rm -r $PACKAGE/usr/share/alsa/ucm2/codecs/hda
+rm $PACKAGE/usr/share/alsa/ucm2/codecs/hda/hdmi.conf
 cp -r chromebook-ucm-conf/platforms $PACKAGE/usr/share/alsa/ucm2/platforms
-mkdir -p $PACKAGE/usr/share/alsa/ucm2/conf.d
 cp -r chromebook-ucm-conf/sof-rt5682 $PACKAGE/usr/share/alsa/ucm2/conf.d/sof-rt5682
 cp -r chromebook-ucm-conf/sof-cs42l42 $PACKAGE/usr/share/alsa/ucm2/conf.d/sof-cs42l42
 # avs tplg
@@ -41,14 +46,14 @@ mkdir -p $PACKAGE/usr/lib/firmware/intel
 cp -r conf/avs/tplg $PACKAGE/usr/lib/firmware/intel/avs
 echo "" >$PACKAGE/usr/lib/firmware/intel/avs/max98357a-tplg.bin
 # rpl
-TPLG_PATH="/usr/lib/firmware/intel/sof-tplg"
-mkdir -p $PACKAGE/$TPLG_PATH
-for TPLG in "cs35l41" "max98357a-rt5682-4ch" "max98357a-rt5682" "max98360a-cs42l42" "max98360a-nau8825" "max98360a-rt5682-2way" "max98360a-rt5682-4ch" "max98360a-rt5682" "max98373-nau8825" "max98390-rt5682" "max98390-ssp2-rt5682-ssp0" "nau8825" "rt1019-nau8825" "rt1019-rt5682" "rt5682" "rt711" "sdw-max98373-rt5682"; do
-  ln -s $TPLG_PATH/sof-adl-$TPLG.tplg $PACKAGE/$TPLG_PATH/sof-rpl-$TPLG.tplg
-  ln -s $TPLG_PATH/sof-adl-$TPLG.tplg.xz $PACKAGE/$TPLG_PATH/sof-rpl-$TPLG.tplg.xz
-done
+# TPLG_PATH="/usr/lib/firmware/intel/sof-tplg"
+# mkdir -p $PACKAGE/$TPLG_PATH
+# for TPLG in "cs35l41" "max98357a-rt5682-4ch" "max98357a-rt5682" "max98360a-cs42l42" "max98360a-nau8825" "max98360a-rt5682-2way" "max98360a-rt5682-4ch" "max98360a-rt5682" "max98373-nau8825" "max98390-rt5682" "max98390-ssp2-rt5682-ssp0" "nau8825" "rt1019-nau8825" "rt1019-rt5682" "rt5682" "rt711" "sdw-max98373-rt5682"; do
+#   ln -s $TPLG_PATH/sof-adl-$TPLG.tplg $PACKAGE/$TPLG_PATH/sof-rpl-$TPLG.tplg
+#   ln -s $TPLG_PATH/sof-adl-$TPLG.tplg.xz $PACKAGE/$TPLG_PATH/sof-rpl-$TPLG.tplg.xz
+# done
 # FIXME: Once this is shipped in distros remove it
-cp -r conf/sof/tplg $PACKAGE/usr/lib/firmware/intel/sof-tplg
+cp conf/sof/tplg/* $PACKAGE/usr/lib/firmware/intel/sof-tplg
 # mendocino
 mkdir -p $PACKAGE/usr/lib/fimware/amd/sof/community
 cp -r conf/amd-sof/fw $PACKAGE/usr/lib/fimware/amd/sof/community
