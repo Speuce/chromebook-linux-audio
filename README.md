@@ -1,10 +1,3 @@
-# THIS REPO HAS BEEN DISCONTINUED
-
-Please use the following repo instead: https://github.com/WeirdTreeThing/chromebook-linux-audio
-
-<details>
-<summary>View the old readme</summary>
-
 <h1 align="center">Python script to enable audio support on Chrome devices</h1>
 
 # Instructions
